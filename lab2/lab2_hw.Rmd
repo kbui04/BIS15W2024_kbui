@@ -1,6 +1,6 @@
 ---
 title: "Lab 2 Homework"
-author: "Please Add Your Name Here"
+author: "Kevin Bui"
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -15,9 +15,11 @@ Make sure to use the formatting conventions of RMarkdown to make your report nea
 
 1. What is a vector in R?  
 
+A vector is a one dimensional list of data which contains discrete values or strings separated by commas.
 
 2. What is a data matrix in R?  
 
+Data matrices order multiple vectors (stacks them) by rows to create a two dimensional representation of data sorted by each vector type.
 
 3. Below are data collected by three scientists (Jill, Steve, Susan in order) measuring temperatures of eight hot springs. Run this code chunk to create the vectors.  
 ```{r}
@@ -32,24 +34,56 @@ spring_8 <- c(36.80, 36.45, 33.15)
 ```
 
 4. Build a data matrix that has the springs as rows and the columns as scientists.  
+```{r}
+all_springs <- c(spring_1, spring_2, spring_3, spring_4, spring_5, spring_6, spring_7, spring_8)
+spring_matrix <- matrix(all_springs, nrow = 8, byrow = T)
+spring_matrix
+```
 
 
 5. The names of the springs are 1.Bluebell Spring, 2.Opal Spring, 3.Riverside Spring, 4.Too Hot Spring, 5.Mystery Spring, 6.Emerald Spring, 7.Black Spring, 8.Pearl Spring. Name the rows and columns in the data matrix. Start by making two new vectors with the names, then use `colnames()` and `rownames()` to name the columns and rows.
-
+```{r}
+spring_names <- c("Bluebell Spring", "Opal Spring", "Riverside Spring", "Too Hot Spring", "Mystery Spring", "Emerald Spring", "Black Spring", "Pearl Spring")
+rownames(spring_matrix) <- spring_names
+titles <- c("Jill", "Steve", "Susan")
+colnames(spring_matrix) <- titles
+spring_matrix
+```
 
 6. Calculate the mean temperature of all eight springs.
+```{r}
+spring_sum <- rowSums(spring_matrix)
+spring_sum
+```
 
 
 7. Add this as a new column in the data matrix.  
 
+```{r}
+spring_matrix_sum <- cbind(spring_matrix, spring_sum)
+titles_sum <- c("Jill", "Steve", "Susan", "Average")
+colnames(spring_matrix_sum) <- titles_sum
+spring_matrix_sum
+```
 
 8. Show Susan's value for Opal Spring only.
+```{r}
+spring_matrix_sum[2, 3]
+```
 
 
 9. Calculate the mean for Jill's column only.  
 
+```{r}
+jill_mean <- spring_matrix_sum[ ,1]
+mean(jill_mean)
+```
 
 10. Use the data matrix to perform one calculation or operation of your interest.
-
+```{r}
+total_mean <- mean((spring_matrix_sum[1:8] + spring_matrix_sum[2:8] + spring_matrix_sum[3:8]))
+total_mean
+```
+I do not know why it gives an error, but the answer is right. I could have done this in a much shorter way by summing the average
 ## Push your final code to GitHub!
 Please be sure that you check the `keep md` file in the knit preferences.  
