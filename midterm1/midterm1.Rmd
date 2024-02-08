@@ -62,7 +62,8 @@ DENA
 ```{r}
 wolves %>%
   group_by(park) %>%
-  summarize(wolf_park_count = n())
+  summarize(wolf_park_count = n()) %>%
+  arrange(desc(wolf_park_count))
 ```
 
 
