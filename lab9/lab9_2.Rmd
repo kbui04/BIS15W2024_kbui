@@ -53,13 +53,13 @@ expenditures %>%
                values_to = "bn_dollars")
 ```
 
-2. Restrict the data to medical and health expenditures only. Sort in ascending order.
+2. Restrict the data to private education only. Sort in ascending order.
 ```{r}
 expenditures %>% 
   pivot_longer(-expenditure,
                names_to = "year",
-               values_to = "bn_dollars") %>% 
-  filter(expenditure=="Medical and Health") %>% 
+               values_to = "bn_dollars") %>%
+  filter(expenditure=="Private Education") %>%
   arrange(-bn_dollars)
 ```
 
