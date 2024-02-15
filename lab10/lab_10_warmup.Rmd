@@ -21,6 +21,7 @@ getwd()
 Simulated malaria data
 ```{r}
 malaria <- read_csv("data/malaria.csv") %>% clean_names()
+malaria
 ```
 
 ```{r}
@@ -34,6 +35,7 @@ malaria_long <- malaria %>%
                names_to = "age_class",
                values_to = "cases") %>% 
   select(newid, data_date, submitted_date, location_name, province, district, age_class, cases)
+malaria_long
 ```
 
 Which district had the highest number of cases on July 30, 2020?
