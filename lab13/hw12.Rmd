@@ -21,8 +21,14 @@ Make sure to use the formatting conventions of RMarkdown to make your report nea
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 library(janitor)
+#install.packages("ggmap")
 library(ggmap)
 ``` 
+
+```{r}
+#register_stadiamaps("a307e07a-2fe4-4da6-ba93-18d754418e5b", write = FALSE)
+```
+
 
 ## Load the Data
 We will use two separate data sets for this homework.  
@@ -94,21 +100,52 @@ str(wolves)
 ```{r}
 wolves %>%
   summarize(distinct = n_distinct(pop))
-```
-```{r}
-wolves %>%
-  filter(pop != )
+tabyl(wolves, pop)
 ```
 
+```{r}
+wolves %>%
+  filter(pop != "AK.PEN" & pop != "DENALI" & pop!= "INT.AK" & pop != "YUCH" & pop != "ELLES" & pop != "N.NWT" & pop!= "SS.NWT" & pop != "BC" & pop != "SE.AK" & pop != "BAN.JAS" & pop != "MEXICAN" & pop != "ONT")
+#i thought way more of these would be in america
+```
 
 
 7. Use the range of the latitude and longitude to build an appropriate bounding box for your map. 
 
+```{r}
+wolves %>%
+  filter(pop != "AK.PEN" & pop != "DENALI" & pop!= "INT.AK" & pop != "YUCH" & pop != "ELLES" & pop != "N.NWT" & pop!= "SS.NWT" & pop != "BC" & pop != "SE.AK" & pop != "BAN.JAS" & pop != "MEXICAN" & pop != "ONT") %>%
+  select(long, lat) %>%
+  summary()
+```
+
+```{r}
+long2 <- c(-110.99, -86.82) 
+lat2 <- c(43.82, 47.75)
+bbox2 <- make_bbox(long2, lat2, f = .05)
+```
+
 8.  Load a map from `stamen` in a `terrain-lines` projection and display the map.  
+
+```{r}
+map2 <- get_stadiamap(bbox2, maptype = "stamen_terrain_lines", zoom = 5)
+ggmap(map2)
+```
+
 
 9. Build a final map that overlays the recorded observations of wolves in the lower 48 states.  
 
+```{r}
+ggmap(map2) + geom_point(data = wolves, aes(long, lat), size = 1) + labs(title = "Wolf Sightings", x = "Longitude", y = "Latitude")
+```
+
+
 10. Use the map from #9 above, but add some aesthetics. Try to `fill` and `color` by population.  
+
+```{r}
+ggmap(map2) + geom_point(data = wolves, aes(long, lat, fill = pop), size = 1, color = "blue") + labs(title = "Wolf Sightings", x = "Longitude", y = "Latitude")
+```
+
 
 ## Push your final code to GitHub!
 Please be sure that you check the `keep md` file in the knit preferences. 
