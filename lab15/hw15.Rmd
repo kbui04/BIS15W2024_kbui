@@ -1,0 +1,128 @@
+---
+title: "BIS15L_AI_hmwk"
+author: "Kevin Bui"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Instructions
+This homework is a bit less traditional this week. There are some errors in the code below. In addition add notes and titles to the code chunks that explains what the code chunck does. Use AI tools, notes from class, or any other resources to help fix the errors. Feel free to edit any plots to your preference. Don't forget to answer the two questions at the bottom. Upon completion, you should not have to '#' out any of the code chunks.
+
+Push your final work to your repository. Your final lab report should be organized, clean, and run free from errors. Remember, you must remove the `#` for the included code chunks to run. Be sure to add your name to the author header above.   
+
+Again make sure to use the formatting conventions of RMarkdown to make your report neat and clean!  
+
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(dplyr)
+```
+
+
+1. Reads blood_count.csv and stores it in a data frame.
+```{r}
+blood_count <- read_csv("data/blood_count_dataset.csv")
+blood_count <- clean_names(blood_count)
+```
+
+2. 
+```{r}
+# Use glimpse() from dplyr to inspect the data structure.
+glimpse(blood_count)
+```
+
+Correction & Explanation: Fixed typo glmpse to glimpse. This chunk provides a quick overview of the data structure.
+3. 
+```{r}
+# Calculate minimum, mean, and maximum red blood cell count by gender.
+blood_count %>% 
+  group_by(gender) %>% 
+  summarize(min = min(red_blood_cells),
+            mean = mean(red_blood_cells),
+            max = max(red_blood_cells))
+```
+
+Correction & Explanation: Fixed syntax errors in summarize(), correcting maen to mean and adding commas to separate arguments.
+4. 
+```{r}
+# Set options for scientific notation and digits.
+options(scipen = 999, digits = 2)
+
+# Filter the data for males and calculate column means for selected columns.
+blood_count %>% 
+  filter(gender == "male") %>%
+  select(3:9) %>%
+  colMeans(na.rm = TRUE)
+
+```
+Correction & Explanation: Fixed the filter() argument from Gender = "male" to gender == "male" and corrected select[3:9] to select(3:9).
+
+
+5. 
+```{r}
+# Filter the data for females and calculate column means for selected columns.
+blood_count %>% 
+  filter(gender == "Female") %>%
+  select(3:9) %>%
+  colMeans(na.rm = TRUE)
+```
+Correction & Explanation: Fixed syntax errors including typo in bloood_count and changed />% to %>%. Also, ensure consistency in gender capitalization if necessary.
+
+6. 
+```{r}
+# Create a boxplot for blood count tests by gender.
+blood_count %>%
+  pivot_longer(cols = 3:9, names_to = "Test", values_to = "Values") %>%
+  ggplot(aes(x = gender, y = Values, fill = gender)) +
+  geom_boxplot() +
+  facet_wrap(~ Test, scales = "free") +
+  labs(title = "Boxplot of Blood Count Tests by Gender",
+       x = "Gender",
+       y = "Values")
+```
+Correction & Explanation: Corrected pivot_wider() to pivot_longer() for accurate plotting and adjusted facet(~ Test, scales = "free") to facet_wrap(~ Test, scales = "free").
+7. 
+```{r}
+# Categorize individuals into age groups.
+# Categorize individuals into age groups with lowercase age.
+grouped_bc <- blood_count %>%
+  mutate(age_group = case_when(
+    age >= 20 & age <= 29 ~ "20s",
+    age >= 30 & age <= 39 ~ "30s",
+    age >= 40 & age <= 49 ~ "40s",
+    age >= 50 & age <= 59 ~ "50s",
+    age >= 60 ~ "60s and above"
+  ))
+
+head(grouped_bc)
+
+```
+Correction & Explanation: Replaced change() with mutate() for creating a new column and adjusted the condition for ages above 60.
+8. 
+```{r}
+# Create a boxplot for blood count tests by age group.
+grouped_bc %>%
+  pivot_longer(cols = 3:9, names_to = "Test", values_to = "values") %>%
+  ggplot(aes(x = age_group, y = values, fill = age_group)) +
+  geom_boxplot() +
+  facet_wrap(~ Test, scales = "free") +
+  labs(title = "Boxplot of Blood Count Tests by Age Group",
+       x = "Age Group",
+       y = "Values")
+```
+Correction & Explanation: Corrected `ase(x = Age_Group, y
+
+
+9. What are two drawbacks and two benefits of AI?
+AI can find rudimentary errors like typos fixing ordering of arguments but is not very good at generating code from scratch, even when giving very specific instructions. It also can become a crutch if the AI generates code you do not understand and do not know how to troubleshoot on your own.
+
+10. Do you think you will use AI for coding in the future? Why or why not?
+Yes, I think it makes coding a lot easier especially for brute force tasks like changing a bunch of column or value names. I am also pretty good at getting the AI to do what I want if I can see what is wrong.
+
+## Push your final code to GitHub!
+Please be sure that you check the `keep md` file in the knit preferences. 
